@@ -1,0 +1,35 @@
+[
+  {
+    "op": "replace",
+    "path": "/spec/routers/0/spec/bgp",
+    "value": {
+      "autonomousSystem": 65401,
+      "enabled": true,
+      "ebgpPreference": 170,
+      "ibgpPreference": 170,
+      "ipv4Unicast": { "enabled": true },
+      "minWaitToAdvertiseSeconds": 0,
+      "rapidWithdrawl": true,
+      "waitForFIBInstall": false
+    }
+  },
+  {
+    "op": "replace",
+    "path": "/spec/irbInterfaces/0/spec/hostRoutePopulate",
+    "value": {
+      "dynamic": { "populate": false },
+      "evpn": { "populate": false, "datapathProgramming": false },
+      "static": { "populate": false }
+    }
+  },
+  {
+    "op": "replace",
+    "path": "/spec/irbInterfaces/0/spec/evpnRouteAdvertisementType",
+    "value": {
+      "arpDynamic": false,
+      "arpStatic": false,
+      "ndDynamic": false,
+      "ndStatic": false
+    }
+  }
+]

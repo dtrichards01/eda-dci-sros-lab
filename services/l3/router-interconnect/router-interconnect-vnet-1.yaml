@@ -1,0 +1,26 @@
+# vnet-1 DC1 spoke: stitch RT targets only (EDA: targets OR policies, not both).
+apiVersion: services.eda.nokia.com/v2
+kind: RouterInterconnect
+metadata:
+  name: router-interconnect-vnet-1
+  namespace: clab-3-tier-leaf-spine-dcgw
+spec:
+  routerRef:
+    name: router-1
+  nodeSelectors:
+    - eda.nokia.com/dci=dc-1
+  primaryBGPInstance:
+    domainId: 65000:200
+  interconnectBGPInstance:
+    controlPlane: EVPN
+    domainId: 65000:100
+    encapsulation: MPLS
+    evi: 1000
+    exportTarget: target:100:100
+    importTarget: target:101:101
+    mpls:
+      allowedTunnelTypes:
+        - LDP
+    routeDistinguisher:
+      assignedNumber: "123"
+      type: Type 1

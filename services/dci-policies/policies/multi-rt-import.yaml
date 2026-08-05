@@ -1,0 +1,67 @@
+# Hub vnet-2 RIC import: accept stitch EVPN from WAN (types 1–5).
+# WAN import policy already filters to spoke stitch RTs; hub import matches by type only.
+# One EVPN route-type per statement (SROS interconnect policy constraint).
+apiVersion: routingpolicies.eda.nokia.com/v1
+kind: Policy
+metadata:
+  name: multi-rt-import
+  namespace: clab-3-tier-leaf-spine-dcgw
+  labels:
+    eda.nokia.com/dci: l3-stitch
+    eda.nokia.com/platform: sros
+spec:
+  defaultAction:
+    policyResult: Reject
+  statements:
+    - name: accept-spoke-evpn-type-1
+      action:
+        policyResult: Accept
+      match:
+        families:
+          - EVPN
+        bgp:
+          evpnRouteTypes:
+            - 1
+    - name: accept-spoke-evpn-type-2
+      action:
+        policyResult: Accept
+      match:
+        families:
+          - EVPN
+        bgp:
+          evpnRouteTypes:
+            - 2
+    - name: accept-spoke-evpn-type-3
+      action:
+        policyResult: Accept
+      match:
+        families:
+          - EVPN
+        bgp:
+          evpnRouteTypes:
+            - 3
+    - name: accept-spoke-evpn-type-4
+      action:
+        policyResult: Accept
+      match:
+        families:
+          - EVPN
+        bgp:
+          evpnRouteTypes:
+            - 4
+    - name: accept-spoke-evpn-type-5
+      action:
+        policyResult: Accept
+      match:
+        families:
+          - EVPN
+        bgp:
+          evpnRouteTypes:
+            - 5
+    - name: accept-spoke-bgp-vpn
+      action:
+        policyResult: Accept
+      match:
+        protocol: BGP_VPN
+        families:
+          - IPv4

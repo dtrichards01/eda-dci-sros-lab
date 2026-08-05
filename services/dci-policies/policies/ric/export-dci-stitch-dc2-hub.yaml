@@ -1,0 +1,66 @@
+# vnet-2 hub RouterInterconnect export: local service EVPN → interconnect.
+# Stitch RT target:101:101 is applied by exportTarget on the RIC CR.
+apiVersion: routingpolicies.eda.nokia.com/v1
+kind: Policy
+metadata:
+  name: export-dci-stitch-dc2-hub
+  namespace: clab-3-tier-leaf-spine-dcgw
+  labels:
+    eda.nokia.com/dci: l3-stitch
+    eda.nokia.com/platform: sros
+spec:
+  defaultAction:
+    policyResult: Reject
+  statements:
+    - name: export-local-evpn-type-1
+      action:
+        policyResult: Accept
+      match:
+        families:
+          - EVPN
+        bgp:
+          evpnRouteTypes:
+            - 1
+    - name: export-local-evpn-type-2
+      action:
+        policyResult: Accept
+      match:
+        families:
+          - EVPN
+        bgp:
+          evpnRouteTypes:
+            - 2
+    - name: export-local-evpn-type-3
+      action:
+        policyResult: Accept
+      match:
+        families:
+          - EVPN
+        bgp:
+          evpnRouteTypes:
+            - 3
+    - name: export-local-evpn-type-4
+      action:
+        policyResult: Accept
+      match:
+        families:
+          - EVPN
+        bgp:
+          evpnRouteTypes:
+            - 4
+    - name: export-local-evpn-type-5
+      action:
+        policyResult: Accept
+      match:
+        families:
+          - EVPN
+        bgp:
+          evpnRouteTypes:
+            - 5
+    - name: export-local-bgp-vpn-stitch
+      action:
+        policyResult: Accept
+      match:
+        protocol: BGP_VPN
+        families:
+          - IPv4

@@ -1,0 +1,20 @@
+[
+  {
+    "op": "remove",
+    "path": "/spec/interconnectBGPInstance/exportPolicy"
+  },
+  {
+    "op": "add",
+    "path": "/spec/interconnectBGPInstance/exportTarget",
+    "value": "target:101:101"
+  },
+  {
+    "op": "remove",
+    "path": "/spec/interconnectBGPInstance/importPolicy"
+  },
+  {
+    "op": "add",
+    "path": "/spec/interconnectBGPInstance/importTarget",
+    "value": "target:100:100"
+  }
+]

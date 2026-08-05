@@ -1,0 +1,21 @@
+[
+  {
+    "op": "replace",
+    "path": "/spec/irbInterfaces/0/spec/hostRoutePopulate",
+    "value": {
+      "dynamic": { "populate": false },
+      "evpn": { "populate": false, "datapathProgramming": false },
+      "static": { "populate": false }
+    }
+  },
+  {
+    "op": "replace",
+    "path": "/spec/irbInterfaces/0/spec/evpnRouteAdvertisementType",
+    "value": {
+      "arpDynamic": false,
+      "arpStatic": false,
+      "ndDynamic": false,
+      "ndStatic": false
+    }
+  }
+]

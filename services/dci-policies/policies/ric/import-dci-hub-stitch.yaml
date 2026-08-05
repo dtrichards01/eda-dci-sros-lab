@@ -1,0 +1,72 @@
+# Spoke interconnect import: hub stitch RT 101:101 (EVPN types 1–5 + BGP_VPN).
+apiVersion: routingpolicies.eda.nokia.com/v1
+kind: Policy
+metadata:
+  name: import-dci-hub-stitch
+  namespace: clab-3-tier-leaf-spine-dcgw
+  labels:
+    eda.nokia.com/dci: l3-stitch
+    eda.nokia.com/platform: sros
+spec:
+  defaultAction:
+    policyResult: Reject
+  statements:
+    - name: accept-hub-evpn-type-1
+      action:
+        policyResult: Accept
+      match:
+        families:
+          - EVPN
+        bgp:
+          communitySet: dci-rt-dc2-l3
+          evpnRouteTypes:
+            - 1
+    - name: accept-hub-evpn-type-2
+      action:
+        policyResult: Accept
+      match:
+        families:
+          - EVPN
+        bgp:
+          communitySet: dci-rt-dc2-l3
+          evpnRouteTypes:
+            - 2
+    - name: accept-hub-evpn-type-3
+      action:
+        policyResult: Accept
+      match:
+        families:
+          - EVPN
+        bgp:
+          communitySet: dci-rt-dc2-l3
+          evpnRouteTypes:
+            - 3
+    - name: accept-hub-evpn-type-4
+      action:
+        policyResult: Accept
+      match:
+        families:
+          - EVPN
+        bgp:
+          communitySet: dci-rt-dc2-l3
+          evpnRouteTypes:
+            - 4
+    - name: accept-hub-evpn-type-5
+      action:
+        policyResult: Accept
+      match:
+        families:
+          - EVPN
+        bgp:
+          communitySet: dci-rt-dc2-l3
+          evpnRouteTypes:
+            - 5
+    - name: accept-hub-bgp-vpn-stitch
+      action:
+        policyResult: Accept
+      match:
+        protocol: BGP_VPN
+        families:
+          - IPv4
+        bgp:
+          communitySet: dci-rt-dc2-l3

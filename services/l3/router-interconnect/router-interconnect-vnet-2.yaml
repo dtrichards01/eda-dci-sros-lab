@@ -1,0 +1,28 @@
+# vnet-2 DC2 hub: exportTarget 101:101; import spoke RT 100:100 via importTarget.
+# EVPN RIC on SROS: importPolicy multi-rt-import does not work on interconnect import;
+# use importTarget (one RT). vnet-5 (102:102) uses a second RIC below.
+apiVersion: services.eda.nokia.com/v2
+kind: RouterInterconnect
+metadata:
+  name: router-interconnect-vnet-2
+  namespace: clab-3-tier-leaf-spine-dcgw
+spec:
+  routerRef:
+    name: router-2
+  nodeSelectors:
+    - eda.nokia.com/dci=dc-2
+  primaryBGPInstance:
+    domainId: 65001:201
+  interconnectBGPInstance:
+    controlPlane: EVPN
+    domainId: 65001:101
+    encapsulation: MPLS
+    evi: 1001
+    exportTarget: target:101:101
+    importTarget: target:100:100
+    mpls:
+      allowedTunnelTypes:
+        - LDP
+    routeDistinguisher:
+      assignedNumber: "456"
+      type: Type 1

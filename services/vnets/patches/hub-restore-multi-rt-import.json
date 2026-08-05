@@ -1,0 +1,11 @@
+[
+  {
+    "op": "remove",
+    "path": "/spec/interconnectBGPInstance/importTarget"
+  },
+  {
+    "op": "add",
+    "path": "/spec/interconnectBGPInstance/importPolicy",
+    "value": "multi-rt-import"
+  }
+]

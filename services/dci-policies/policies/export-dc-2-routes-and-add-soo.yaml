@@ -1,0 +1,143 @@
+# DC2 WAN export (secondary link): stitch EVPN + BGP_VPN with SOO.
+apiVersion: routingpolicies.eda.nokia.com/v1
+kind: Policy
+metadata:
+  name: export-dc-2-routes-and-add-soo
+  namespace: clab-3-tier-leaf-spine-dcgw
+  annotations:
+    l2: loop-avoidance
+  labels:
+    eda.nokia.com/dci: evpn-wan
+    eda.nokia.com/platform: sros
+spec:
+  defaultAction:
+    policyResult: Reject
+  statements:
+    - name: reject-imported-evpn
+      action:
+        policyResult: Reject
+      match:
+        families:
+          - EVPN
+        tags:
+          tagSet: tag-10
+    - name: reject-imported-bgp-vpn
+      action:
+        policyResult: Reject
+      match:
+        protocol: BGP_VPN
+        families:
+          - IPv4
+        tags:
+          tagSet: tag-10
+    - name: export-local-l2-type-2-evpn
+      action:
+        policyResult: Accept
+        bgp:
+          communities:
+            addSets:
+              - soo-2211
+      match:
+        families:
+          - EVPN
+        bgp:
+          communitySet: dci-rt-l2-export-dc2
+          evpnRouteTypes:
+            - 2
+    - name: export-local-l2-type-3-evpn
+      action:
+        policyResult: Accept
+        bgp:
+          communities:
+            addSets:
+              - soo-2211
+      match:
+        families:
+          - EVPN
+        bgp:
+          communitySet: dci-rt-l2-export-dc2
+          evpnRouteTypes:
+            - 3
+    - name: export-local-l3-evpn-type-1
+      action:
+        policyResult: Accept
+        bgp:
+          communities:
+            addSets:
+              - soo-2211
+      match:
+        families:
+          - EVPN
+        bgp:
+          communitySet: dci-rt-dc2-l3
+          evpnRouteTypes:
+            - 1
+    - name: export-local-l3-evpn-type-2
+      action:
+        policyResult: Accept
+        bgp:
+          communities:
+            addSets:
+              - soo-2211
+      match:
+        families:
+          - EVPN
+        bgp:
+          communitySet: dci-rt-dc2-l3
+          evpnRouteTypes:
+            - 2
+    - name: export-local-l3-evpn-type-3
+      action:
+        policyResult: Accept
+        bgp:
+          communities:
+            addSets:
+              - soo-2211
+      match:
+        families:
+          - EVPN
+        bgp:
+          communitySet: dci-rt-dc2-l3
+          evpnRouteTypes:
+            - 3
+    - name: export-local-l3-evpn-type-4
+      action:
+        policyResult: Accept
+        bgp:
+          communities:
+            addSets:
+              - soo-2211
+      match:
+        families:
+          - EVPN
+        bgp:
+          communitySet: dci-rt-dc2-l3
+          evpnRouteTypes:
+            - 4
+    - name: export-local-l3-evpn-type-5
+      action:
+        policyResult: Accept
+        bgp:
+          communities:
+            addSets:
+              - soo-2211
+      match:
+        families:
+          - EVPN
+        bgp:
+          communitySet: dci-rt-dc2-l3
+          evpnRouteTypes:
+            - 5
+    - name: export-local-bgp-vpn-hub
+      action:
+        policyResult: Accept
+        bgp:
+          communities:
+            addSets:
+              - soo-2211
+      match:
+        protocol: BGP_VPN
+        families:
+          - IPv4
+        bgp:
+          communitySet: dci-rt-dc2-l3

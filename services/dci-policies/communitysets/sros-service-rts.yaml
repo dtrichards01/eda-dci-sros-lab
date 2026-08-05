@@ -1,0 +1,96 @@
+# DCI stitch route-targets — SROS format (target:ASN:NNN).
+# Aligned with RouterInterconnect / BridgeDomainInterconnect exportTarget on SR-1 lab.
+apiVersion: routingpolicies.eda.nokia.com/v1
+kind: CommunitySet
+metadata:
+  name: dci-rt-all-l3-stitch
+  namespace: clab-3-tier-leaf-spine-dcgw
+spec:
+  members:
+    - target:100:100
+    - target:101:101
+    - target:102:102
+---
+apiVersion: routingpolicies.eda.nokia.com/v1
+kind: CommunitySet
+metadata:
+  name: dci-rt-dc1-l3
+  namespace: clab-3-tier-leaf-spine-dcgw
+spec:
+  members:
+    - target:100:100
+---
+apiVersion: routingpolicies.eda.nokia.com/v1
+kind: CommunitySet
+metadata:
+  name: dci-rt-dc2-l3
+  namespace: clab-3-tier-leaf-spine-dcgw
+spec:
+  members:
+    - target:101:101
+---
+apiVersion: routingpolicies.eda.nokia.com/v1
+kind: CommunitySet
+metadata:
+  name: dci-rt-vnet-5-stitch
+  namespace: clab-3-tier-leaf-spine-dcgw
+spec:
+  members:
+    - target:102:102
+---
+apiVersion: routingpolicies.eda.nokia.com/v1
+kind: CommunitySet
+metadata:
+  name: vpn-import-rts
+  namespace: clab-3-tier-leaf-spine-dcgw
+spec:
+  members:
+    - target:100:100
+    - target:102:102
+---
+apiVersion: routingpolicies.eda.nokia.com/v1
+kind: CommunitySet
+metadata:
+  name: dci-rt-l2-stitch
+  namespace: clab-3-tier-leaf-spine-dcgw
+spec:
+  members:
+    - target:300:300
+    - target:301:301
+---
+apiVersion: routingpolicies.eda.nokia.com/v1
+kind: CommunitySet
+metadata:
+  name: dci-rt-l2-export-dc1
+  namespace: clab-3-tier-leaf-spine-dcgw
+spec:
+  members:
+    - target:300:300
+---
+apiVersion: routingpolicies.eda.nokia.com/v1
+kind: CommunitySet
+metadata:
+  name: dci-rt-l2-export-dc2
+  namespace: clab-3-tier-leaf-spine-dcgw
+spec:
+  members:
+    - target:301:301
+---
+apiVersion: routingpolicies.eda.nokia.com/v1
+kind: CommunitySet
+metadata:
+  name: dci-rt-l2-import-dc1
+  namespace: clab-3-tier-leaf-spine-dcgw
+spec:
+  members:
+    - target:301:301
+---
+apiVersion: routingpolicies.eda.nokia.com/v1
+kind: CommunitySet
+metadata:
+  name: dci-rt-l2-import-dc2
+  namespace: clab-3-tier-leaf-spine-dcgw
+spec:
+  members:
+    - target:300:300
+

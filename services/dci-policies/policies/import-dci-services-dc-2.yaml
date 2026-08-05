@@ -1,0 +1,193 @@
+# WAN import on DC2 DCI BGP peers — EVPN RIC stitch + L2 type-2/3.
+apiVersion: routingpolicies.eda.nokia.com/v1
+kind: Policy
+metadata:
+  name: import-dci-services-dc-2
+  namespace: clab-3-tier-leaf-spine-dcgw
+  labels:
+    eda.nokia.com/dci: evpn-wan
+    eda.nokia.com/platform: sros
+spec:
+  defaultAction:
+    policyResult: Reject
+  statements:
+    - name: reject-dc2-soo-evpn
+      action:
+        policyResult: Reject
+      match:
+        families:
+          - EVPN
+        bgp:
+          communitySet: soo-2211
+    - name: accept-remote-l2-type-2-evpn
+      action:
+        policyResult: Accept
+        tags:
+          applyTagSet: tag-10
+      match:
+        families:
+          - EVPN
+        bgp:
+          communitySet: dci-rt-l2-import-dc2
+          evpnRouteTypes:
+            - 2
+    - name: accept-remote-l2-type-3-evpn
+      action:
+        policyResult: Accept
+        tags:
+          applyTagSet: tag-10
+      match:
+        families:
+          - EVPN
+        bgp:
+          communitySet: dci-rt-l2-import-dc2
+          evpnRouteTypes:
+            - 3
+    - name: accept-remote-l3-evpn-type-1
+      action:
+        policyResult: Accept
+        tags:
+          applyTagSet: tag-10
+      match:
+        families:
+          - EVPN
+        bgp:
+          communitySet: dci-rt-dc1-l3
+          evpnRouteTypes:
+            - 1
+    - name: accept-remote-l3-evpn-type-2
+      action:
+        policyResult: Accept
+        tags:
+          applyTagSet: tag-10
+      match:
+        families:
+          - EVPN
+        bgp:
+          communitySet: dci-rt-dc1-l3
+          evpnRouteTypes:
+            - 2
+    - name: accept-remote-l3-evpn-type-3
+      action:
+        policyResult: Accept
+        tags:
+          applyTagSet: tag-10
+      match:
+        families:
+          - EVPN
+        bgp:
+          communitySet: dci-rt-dc1-l3
+          evpnRouteTypes:
+            - 3
+    - name: accept-remote-l3-evpn-type-4
+      action:
+        policyResult: Accept
+        tags:
+          applyTagSet: tag-10
+      match:
+        families:
+          - EVPN
+        bgp:
+          communitySet: dci-rt-dc1-l3
+          evpnRouteTypes:
+            - 4
+    - name: accept-remote-l3-evpn-type-5
+      action:
+        policyResult: Accept
+        tags:
+          applyTagSet: tag-10
+      match:
+        families:
+          - EVPN
+        bgp:
+          communitySet: dci-rt-dc1-l3
+          evpnRouteTypes:
+            - 5
+    - name: accept-remote-vnet-5-evpn-type-1
+      action:
+        policyResult: Accept
+        tags:
+          applyTagSet: tag-10
+      match:
+        families:
+          - EVPN
+        bgp:
+          communitySet: dci-rt-vnet-5-stitch
+          evpnRouteTypes:
+            - 1
+    - name: accept-remote-vnet-5-evpn-type-2
+      action:
+        policyResult: Accept
+        tags:
+          applyTagSet: tag-10
+      match:
+        families:
+          - EVPN
+        bgp:
+          communitySet: dci-rt-vnet-5-stitch
+          evpnRouteTypes:
+            - 2
+    - name: accept-remote-vnet-5-evpn-type-3
+      action:
+        policyResult: Accept
+        tags:
+          applyTagSet: tag-10
+      match:
+        families:
+          - EVPN
+        bgp:
+          communitySet: dci-rt-vnet-5-stitch
+          evpnRouteTypes:
+            - 3
+    - name: accept-remote-vnet-5-evpn-type-4
+      action:
+        policyResult: Accept
+        tags:
+          applyTagSet: tag-10
+      match:
+        families:
+          - EVPN
+        bgp:
+          communitySet: dci-rt-vnet-5-stitch
+          evpnRouteTypes:
+            - 4
+    - name: accept-remote-vnet-5-evpn-type-5
+      action:
+        policyResult: Accept
+        tags:
+          applyTagSet: tag-10
+      match:
+        families:
+          - EVPN
+        bgp:
+          communitySet: dci-rt-vnet-5-stitch
+          evpnRouteTypes:
+            - 5
+    - name: reject-all-remote-evpn
+      action:
+        policyResult: Reject
+      match:
+        families:
+          - EVPN
+    - name: accept-remote-spoke-bgp-vpn
+      action:
+        policyResult: Accept
+        tags:
+          applyTagSet: tag-10
+      match:
+        protocol: BGP_VPN
+        families:
+          - IPv4
+        bgp:
+          communitySet: dci-rt-dc1-l3
+    - name: accept-remote-vnet-5-bgp-vpn
+      action:
+        policyResult: Accept
+        tags:
+          applyTagSet: tag-10
+      match:
+        protocol: BGP_VPN
+        families:
+          - IPv4
+        bgp:
+          communitySet: dci-rt-vnet-5-stitch
