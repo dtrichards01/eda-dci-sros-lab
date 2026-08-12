@@ -1,10 +1,15 @@
 #!/usr/bin/env bash
 # L3 VNet prerequisites: service-router BGP on DCI vnets; disable IRB host-route / EVPN-MAC adv.
+#
+# Default design = type-5 stitch (single-leaf-per-subnet): disable hostRoutePopulate.
+# If hosts span MULTIPLE leaves on the SAME subnet, do NOT apply the IRB-disable patches
+# for that vnet — enable hostRoutePopulate / related EVPN host-route params instead.
+# Do not confuse that case with MSG/GBP client blocks (loopback OK / client FAIL).
 set -eu
 NS="${NS:-clab-3-tier-leaf-spine-dcgw}"
 PATCH="$(cd "$(dirname "$0")/../services/vnets/patches" && pwd)"
 
-echo "==> Patch vnet-1..7: disable IRB hostRoutePopulate + evpnRouteAdvertisementType"
+echo "==> Patch vnet-1..7: disable IRB hostRoutePopulate + evpnRouteAdvertisementType (type-5 stitch default)"
 for v in 1 2 3 4 5 6 7; do
   case "$v" in
     1) patch="$PATCH/vnet-1-l3-dci.json" ;;

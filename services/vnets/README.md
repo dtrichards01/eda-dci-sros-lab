@@ -4,7 +4,7 @@ JSON patches applied by `scripts/apply-vnet-l3-prereqs-sros.sh` to `VirtualNetwo
 
 ## Policy
 
-**Disable** on every IRB-backed vnet (`vnet-1` … `vnet-7`):
+**Default (type-5 stitch design):** **Disable** on every IRB-backed vnet (`vnet-1` … `vnet-7`):
 
 | Field | Setting |
 |-------|---------|
@@ -17,7 +17,15 @@ JSON patches applied by `scripts/apply-vnet-l3-prereqs-sros.sh` to `VirtualNetwo
 | `evpnRouteAdvertisementType.ndDynamic` | `false` |
 | `evpnRouteAdvertisementType.ndStatic` | `false` |
 
-L3 DCI reachability uses **stitch route-target type-5** prefixes (subnet and optional loopback `/32` routes on `routedInterfaces`). Fabric EVPN type-2 host MAC/IP ads are not used for WAN stitch.
+L3 DCI reachability uses **stitch route-target type-5** prefixes (subnet and optional loopback `/32` routes on `routedInterfaces`). Fabric EVPN type-2 host MAC/IP ads are not used for WAN stitch in this default.
+
+### When to enable host routes instead
+
+If **hosts span multiple leaves on the same subnet**, do **not** apply the disable above for that vnet — enable `hostRoutePopulate` (and related EVPN host-route / ARP-ND advertisement) so host routes are populated between leaves. That is fabric host-reachability, **not** the fix for loopback-OK / client-FAIL when `MicroSegmentationPolicy/red-blue-green` targets `vnet-1` (check GBP first).
+
+### Loopback Interface = one member
+
+Anycast loopback `/32` on another leaf: separate Interface CR (single member) + second `routedInterfaces` entry — Interfaces app rejects multi-member Loopback (`more than one members are provided for type [loopback]`).
 
 ## Patch files
 
@@ -32,7 +40,7 @@ L3 DCI reachability uses **stitch route-target type-5** prefixes (subnet and opt
 | `vnet-7-irb-disable.json` | vnet-7 | IRB disable (if deployed) |
 | `irb-disable-host-evpn-adv.json` | — | Shared IRB-disable fragment (reference) |
 
-Patches use `replace` on paths that must already exist on the `VirtualNetwork` CR (after initial EDA deploy). Apply on the platform via the script or `kubectl patch` per vnet.
+Patches use `replace` on paths that must already exist on the `VirtualNetwork` CR (after initial EDA deploy). If those fields are **missing**, `replace` no-ops — use `op: add` when intentionally applying this design. **Not** the fix for loopback-OK / client-FAIL when `MicroSegmentationPolicy/red-blue-green` targets `vnet-1` (see personal `eda-dci` skill).
 
 ## Apply
 
