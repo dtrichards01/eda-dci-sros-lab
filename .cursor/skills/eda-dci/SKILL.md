@@ -18,9 +18,9 @@ Full cross-lab skill: `~/.cursor/skills/eda-dci/`.
 - No `reject-all-local-evpn` on WAN — fabric EVPN does not leak by default
 - **Hub vnet-2 import:** `import-ric-vnet-2` + `vpn-import-rt-100` / `vpn-import-rt-102` (one Accept per RT). SROS CommunitySet is **All only** (no `Any`); multi-member All = AND. Policy field = **`statements`**. Do not use multi-member `vpn-import-rts` for OR import.
 - RIC: targets **or** policies, never both on same interconnect (hub: `exportTarget` + `importPolicy`)
-- **Client↔client blocked while loopbacks work:** MSG/GBP on `vnet-1` (`red-blue-green`)
-- **Loopback Interface:** one member only (`type: Loopback`). App rejects multi-member (`more than one members are provided for type [loopback]`, tx `4570`). Anycast → separate Interface CRs + separate VN `routedInterfaces`. Clean: `loopback01`→leaf-1 (`1.1.1.1`), `loopback02`→leaf-5 (`2.2.2.2`).
-- **Multi-leaf same subnet:** enable IRB `hostRoutePopulate` / related EVPN host-route params for host reachability — **not** a substitute for the GBP golden rule.
+- **Loopback Interface:** single-member only (`type: Loopback`).
+- **Multi-leaf same subnet:** enable IRB `hostRoutePopulate` / related EVPN host-route params when hosts span multiple leaves.
+- **EQL cheat sheet:** `docs/DCI-CONTROL-PLANE-TROUBLESHOOTING.md` §4; live aliases/catalog in **eda-mcp** UI.
 - **Do not mix EVPN + IPVPN in one Policy.** Use mode pairs under `services/dci-policies/wan/policies/`:
   - EVPN: `import-dci-evpn-dc-{1,2}` / `export-dci-evpn-dc-{1,2}`
   - IPVPN: `import-dci-ipvpn-dc-{1,2}` / `export-dci-ipvpn-dc-{1,2}`
